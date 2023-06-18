@@ -7,6 +7,7 @@ public class TestAutomata {
         automate.ajouterEtat("q0");
         automate.ajouterEtat("q1");
         automate.ajouterEtat("q2");
+        automate.ajouterEtat("q4");
         
         // Ajout de l'alphabet
         automate.ajouterAlphabet("a");
@@ -22,10 +23,10 @@ public class TestAutomata {
         automate.ajouterTransition("q2", "a", "q0");
         
         // Affichage des propriétés de l'automate
-        System.out.println("États : " + automate.getEtats());
-        System.out.println("Alphabet : " + automate.getAlphabet());
-        System.out.println("États initiaux : " + automate.getEtatsInitiaux());
-        System.out.println("États finaux : " + automate.getEtatsFinaux());
-        System.out.println("Transitions : " + automate.getTransitions());
+        System.out.println(" === ETATS : " + automate.getEtats());
+        System.out.println(" === ALPHABET : " + automate.getAlphabet());
+        System.out.println(" === ETATS INITIAUX : " + automate.getEtatsInitiaux());
+        System.out.println(" === ETATS FINALS : " + automate.getEtatsFinaux());
+        System.out.println(" === TRANSITIONS : " + automate.getTransitions());
     }
 }
