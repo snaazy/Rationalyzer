@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class Automata {
+    private String nom;
     private Set<String> etats;
     private Set<String> alphabet;
     private Set<String> etatsInitiaux;
@@ -13,6 +14,23 @@ public class Automata {
         etatsInitiaux = new HashSet<>();
         etatsFinaux = new HashSet<>();
         transitions = new HashMap<>();
+    }
+
+    public Automata(String nom) {
+        this.nom = nom;
+        etats = new HashSet<>();
+        alphabet = new HashSet<>();
+        etatsInitiaux = new HashSet<>();
+        etatsFinaux = new HashSet<>();
+        transitions = new HashMap<>();
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public void ajouterEtat(String etat) {
@@ -65,21 +83,4 @@ public class Automata {
         return transitions;
     }
 
-    public static void main(String[] args) {
-        Automata automate = new Automata();
-        automate.ajouterEtat("q0");
-        automate.ajouterEtat("q1");
-        automate.ajouterAlphabet("a");
-        automate.ajouterAlphabet("b");
-        automate.ajouterEtatInitial("q0");
-        automate.ajouterEtatFinal("q1");
-        automate.ajouterTransition("q0", "a", "q1");
-
-        // Affichage des propriétés de l'automate
-        System.out.println("États : " + automate.getEtats());
-        System.out.println("Alphabet : " + automate.getAlphabet());
-        System.out.println("États initiaux : " + automate.getEtatsInitiaux());
-        System.out.println("États finaux : " + automate.getEtatsFinaux());
-        System.out.println("Transitions : " + automate.getTransitions());
-    }
 }
