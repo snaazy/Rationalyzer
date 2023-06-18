@@ -58,6 +58,11 @@ public class TestAutomata {
 
          System.out.println(" ---- FIN TEST ACCEPTATION  ---- \n");
 
+          // Test de la complétude de l'automate
+        boolean estComplet = automate.estComplet();
+        
+        System.out.println("L'automate est complet : " + estComplet);
+
         
     }
 }
