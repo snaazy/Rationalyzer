@@ -63,6 +63,39 @@ public class Automata {
         etatsDestination.add(etatDestination);
     }
 
+    public boolean accepteMot(String mot) {
+        // On créé un ensemble etatsCourant qui contient initialement les états initiaux de l'automate.
+        // cet ensemble représente les états possibles à un certain point de l'exécution de l'automate.
+
+        Set<String> etatsCourants = new HashSet<>(etatsInitiaux);
+        
+        // on itère sur chaque symbole du mot donné en paramètre. La méthode toCharArray convertir le mot en un tableau
+        // de caractères, et la boucle for parcourt chaque caractère du mot
+        for (char symbole : mot.toCharArray()) {
+            // ensemblr vide qui va contenir les etats atteignables à partir des etats courants en lisant le symbole en cours
+            Set<String> etatsSuivants = new HashSet<>();
+            // on irere sur chaque etat courants qui sont les etats actuellement possibles
+            for (String etat : etatsCourants) {
+                Map<String, Set<String>> transitionEtat = transitions.getOrDefault(etat, Collections.emptyMap());
+                Set<String> etatsDestination = transitionEtat.getOrDefault(String.valueOf(symbole), Collections.emptySet());
+                etatsSuivants.addAll(etatsDestination);
+            }
+    
+            etatsCourants = etatsSuivants;
+        }
+    
+        // Vérification des états finals, si l'un des etats finals de l'automate se trouve dans l'ensemble etatscourants => l'automate
+        // a atteint un etat final en lisant le mot, on renvoie true
+        for (String etatFinal : etatsFinaux) {
+            if (etatsCourants.contains(etatFinal)) {
+                return true;
+            }
+        }
+    
+        return false;
+    }
+    
+
     public Set<String> getEtats() {
         return etats;
     }
