@@ -95,6 +95,52 @@ public class Automata {
         return false;
     }
     
+    public void completion(){
+        String poubelle = "Poubelle"; // etat poubelle
+        ajouterEtat(poubelle);
+
+        // recherche des symboles manquants dans les transitions de chaque etat
+        for(String etat : etats){
+            Map<String, Set<String>> transitionEtat = transitions.getOrDefault(etat, new HashMap<>());
+            Set<String> symboles = new HashSet<>(alphabet);
+            symboles.removeAll(transitionEtat.keySet());
+
+            // ajout des trnasitions manquants vers l'état poubelle
+            for(String symbole : symboles){
+                ajouterTransition(etat, symbole, poubelle);
+            }
+        }
+
+        //ajout des transitions manquants pour l'etat poubelle
+        Map<String, Set<String>> poubelleTransitions = new HashMap<>();
+        for(String symbole : alphabet){
+            poubelleTransitions.put(symbole, Collections.singleton(poubelle));
+        }
+        transitions.put(poubelle, poubelleTransitions);
+    }
+
+    public boolean estComplet() {
+        // Vérification des transitions pour chaque état et symbole de l'alphabet
+        for (String etat : etats) {
+            for (String symbole : alphabet) {
+                Map<String, Set<String>> transitionEtat = transitions.getOrDefault(etat, new HashMap<>());
+                Set<String> etatsDestination = transitionEtat.getOrDefault(symbole, Collections.emptySet());
+                
+                if (etatsDestination.isEmpty()) {
+                    return false;
+                }
+            }
+        }
+        
+        String poubelle = "Poubelle";
+        Map<String, Set<String>> poubelleTransitions = transitions.getOrDefault(poubelle, new HashMap<>());
+        
+        if (!poubelleTransitions.isEmpty()) {
+            return false;
+        }
+        
+        return true;
+    }
 
     public Set<String> getEtats() {
         return etats;
