@@ -65,7 +65,7 @@ public class Automata {
 
     public boolean accepteMot(String mot) {
         // On créé un ensemble etatsCourant qui contient initialement les états initiaux de l'automate.
-        // cet ensemble représente les états possibles à un certain point de l'exécution de l'automate.
+       
 
         Set<String> etatsCourants = new HashSet<>(etatsInitiaux);
         
