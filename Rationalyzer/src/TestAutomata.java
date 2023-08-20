@@ -16,16 +16,17 @@ public class TestAutomata {
         
         // Ajout des états initiaux et finals
         automate.ajouterEtatInitial("q1");
-        automate.ajouterEtatFinal("q2");
         automate.ajouterEtatFinal("q3");
+      
         
         // Ajout des transitions
-        automate.ajouterTransition("q1", "a", "q1");
         automate.ajouterTransition("q1", "a", "q2");
-        automate.ajouterTransition("q2", "b", "q2");
+        automate.ajouterTransition("q1", "b", "q1");
+        automate.ajouterTransition("q2", "a", "q3");
         automate.ajouterTransition("q2", "b", "q3");
+        automate.ajouterTransition("q3", "b", "q3");
         automate.ajouterTransition("q3", "a", "q1");
-        automate.ajouterTransition("q1", "b", "q3");
+     
         
         // Affichage des propriétés de l'automate
         System.out.println(" ---- AFFICHAGE DES ATTRIBUTS ---- \n");
@@ -58,11 +59,14 @@ public class TestAutomata {
 
          System.out.println(" ---- FIN TEST ACCEPTATION  ---- \n");
 
-          // Test de la complétude de l'automate
-        boolean estComplet = automate.estComplet();
+          // Test de la complétude de l'automate avant la complétion
+          boolean estComplet = automate.estComplet();
+          System.out.println("L'automate est complet : " + estComplet);
+  
         
-        System.out.println("L'automate est complet : " + estComplet);
 
+
+        
         
     }
 }
