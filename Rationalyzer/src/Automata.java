@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Autozezezezata {
+public class Automata {
     private String nom;
     private Set<String> etats;
     private Set<String> alphabet;
