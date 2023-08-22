@@ -95,29 +95,30 @@ public class Automata {
         return false;
     }
     
-    public void completion(){
+    public void completion() {
         String poubelle = "Poubelle"; // etat poubelle
         ajouterEtat(poubelle);
-
-        // recherche des symboles manquants dans les transitions de chaque etat
-        for(String etat : etats){
+    
+        // Ajout des transitions manquantes pour chaque état
+        for (String etat : etats) {
             Map<String, Set<String>> transitionEtat = transitions.getOrDefault(etat, new HashMap<>());
-            Set<String> symboles = new HashSet<>(alphabet);
-            symboles.removeAll(transitionEtat.keySet());
-
-            // ajout des trnasitions manquants vers l'état poubelle
-            for(String symbole : symboles){
+            Set<String> symbolesManquants = new HashSet<>(alphabet);
+            symbolesManquants.removeAll(transitionEtat.keySet());
+    
+            // Ajout des transitions manquantes vers l'état poubelle pour chaque symbole manquant
+            for (String symbole : symbolesManquants) {
                 ajouterTransition(etat, symbole, poubelle);
             }
         }
-
-        //ajout des transitions manquants pour l'etat poubelle
+    
+        // Ajout des transitions manquantes pour l'état poubelle
         Map<String, Set<String>> poubelleTransitions = new HashMap<>();
-        for(String symbole : alphabet){
+        for (String symbole : alphabet) {
             poubelleTransitions.put(symbole, Collections.singleton(poubelle));
         }
         transitions.put(poubelle, poubelleTransitions);
     }
+    
 
     public boolean estComplet() {
         String poubelle = "Poubelle";
@@ -127,21 +128,25 @@ public class Automata {
             for (String symbole : alphabet) {
                 Map<String, Set<String>> transitionEtat = transitions.getOrDefault(etat, new HashMap<>());
                 Set<String> etatsDestination = transitionEtat.getOrDefault(symbole, Collections.emptySet());
-                
+    
                 if (etatsDestination.isEmpty() || etatsDestination.contains(poubelle)) {
+                    // L'état est incomplet, mais il peut y avoir d'autres transitions pour d'autres symboles,
+                    // donc continuez à vérifier les autres transitions
                     return false;
                 }
             }
         }
-        
+    
         Map<String, Set<String>> poubelleTransitions = transitions.getOrDefault(poubelle, new HashMap<>());
-        
+    
         if (!poubelleTransitions.isEmpty()) {
+            // L'état poubelle ne devrait pas avoir de transitions sortantes
             return false;
         }
-        
+    
         return true;
     }
+    
     
 
     public Set<String> getEtats() {
