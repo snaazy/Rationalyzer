@@ -7,30 +7,21 @@ public class TestAutomata {
         automate.ajouterEtat("q1");
         automate.ajouterEtat("q2");
         automate.ajouterEtat("q3");
-        automate.ajouterEtat("q4");
-
+   
         automate.ajouterAlphabet("a");
         automate.ajouterAlphabet("b");
 
         automate.ajouterEtatInitial("q1");
-        automate.ajouterEtatFinal("q2");
+        automate.ajouterEtatFinal("q3");
 
+        automate.ajouterTransition("q1", "b", "q1");
         automate.ajouterTransition("q1", "a", "q2");
-        automate.ajouterTransition("q1", "b", "q3");
-        automate.ajouterTransition("q2", "a", "q4");
-        automate.ajouterTransition("q2", "b", "q1");
+        automate.ajouterTransition("q2", "b", "q2");
+        automate.ajouterTransition("q2", "a", "q3");
+        automate.ajouterTransition("q3", "b", "q3");
+      // on enleve la complétude  automate.ajouterTransition("q3", "a", "q1");
+        
 
-        Automata automateDeux = new Automata("B");
-        automateDeux.ajouterEtat("q1");
-        automateDeux.ajouterEtat("q2");
-        automateDeux.ajouterAlphabet("a");
-        automateDeux.ajouterAlphabet("b");
-        automateDeux.ajouterEtatInitial("q1");
-        automateDeux.ajouterEtatFinal("q2");
-        automateDeux.ajouterTransition("q1", "b", "q1");
-        automateDeux.ajouterTransition("q1", "a", "q2");
-        automateDeux.ajouterTransition("q2", "b", "q2");
-        automateDeux.ajouterTransition("q2", "a", "q1");
 
         afficherAttributsAutomate(automate);
         testerAcceptation(automate);
@@ -41,9 +32,9 @@ public class TestAutomata {
         afficherAttributsAutomate(automate);
         testerCompletudeApres(automate);
 
-        afficherAttributsAutomate(automateDeux);
-        testerAcceptation(automateDeux);
-        testerCompletude(automateDeux);
+        afficherAttributsAutomate(automate);
+        testerAcceptation(automate);
+        testerCompletude(automate);
     }
 
     private static void afficherAttributsAutomate(Automata automate) {
