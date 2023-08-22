@@ -133,7 +133,7 @@ public class Automata {
                 Map<String, Set<String>> transitionEtat = transitions.getOrDefault(etat, new HashMap<>());
                 Set<String> etatsDestination = transitionEtat.getOrDefault(symbole, Collections.emptySet());
     
-                if (etatsDestination.isEmpty()) {
+                if (etatsDestination.isEmpty() || etatsDestination.contains(poubelle)) {
                     // L'état est incomplet, mais il peut y avoir d'autres transitions pour d'autres symboles,
                     // donc continuez à vérifier les autres transitions
                     return false;
@@ -141,11 +141,15 @@ public class Automata {
             }
         }
     
-        Map<String, Set<String>> poubelleTransitions = transitions.getOrDefault(poubelle, new HashMap<>());
+        // Vérification des transitions pour l'état poubelle
+        for (String symbole : alphabet) {
+            Map<String, Set<String>> poubelleTransitions = transitions.getOrDefault(poubelle, new HashMap<>());
+            Set<String> etatsDestination = poubelleTransitions.getOrDefault(symbole, Collections.emptySet());
     
-        if (!poubelleTransitions.isEmpty()) {
-            // L'état poubelle ne devrait pas avoir de transitions sortantes
-            return false;
+            if (!etatsDestination.isEmpty()) {
+                // L'état poubelle ne devrait pas avoir de transitions sortantes
+                return false;
+            }
         }
     
         return true;
