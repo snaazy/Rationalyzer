@@ -122,27 +122,25 @@ public class Automata {
 
     public boolean estComplet() {
         String poubelle = "Poubelle";
-    
+        
         // Vérification des transitions pour chaque état et symbole de l'alphabet
         for (String etat : etats) {
             for (String symbole : alphabet) {
                 Map<String, Set<String>> transitionEtat = transitions.getOrDefault(etat, new HashMap<>());
                 Set<String> etatsDestination = transitionEtat.getOrDefault(symbole, Collections.emptySet());
-    
+        
                 if (etatsDestination.isEmpty()) {
                     // Si les états de destination sont vides, c'est incomplet
                     return false;
                 }
-    
-                if (etatsDestination.contains(poubelle)) {
-                    // Si l'état poubelle est parmi les états de destination, c'est incomplet
-                    return false; ////// ?????? ici??
-                }
+        
+               
             }
         }
-    
+        
         return true;
     }
+    
     
     
     
