@@ -79,18 +79,26 @@ public class TestAutomata {
 
          System.out.println(" ---- FIN TEST ACCEPTATION  ---- \n");
 
-          // Test de la complétude de l'automate avant la complétion
-          boolean estComplet = automate.estComplet();
-          System.out.println("L'automate est complet : " + estComplet);
+        // Test de la complétude de l'automate avant la complétion
+        boolean estCompletAvant = automate.estComplet();
+        System.out.println("Avant la complétion : L'automate est complet : " + estCompletAvant);
 
-          automate.completion();
+        // Compléter l'automate
+        automate.completion();
+  // Affichage des propriétés de l'automate
+  System.out.println(" ---- AFFICHAGE DES ATTRIBUTS ---- \n");
+  System.out.println(" === NOM : " + automate.getNom());
+  System.out.println(" === ETATS : " + automate.getEtats());
+  System.out.println(" === ALPHABET : " + automate.getAlphabet());
+  System.out.println(" === ETATS INITIAUX : " + automate.getEtatsInitiaux());
+  System.out.println(" === ETATS FINALS : " + automate.getEtatsFinaux());
+  System.out.println(" === TRANSITIONS : " + automate.getTransitions() + "\n");
+  System.out.println(" ---- FIN AFFICHAGE DES ATTRIBUTS ---- ");
+        // Test de la complétude de l'automate après la complétion
+        boolean estCompletApres = automate.estComplet();
+        System.out.println("Après la complétion : L'automate est complet : " + estCompletApres);
 
-
-
-
-
-
-
+          
              
         // Affichage des propriétés de l'automate
         System.out.println(" ---- AFFICHAGE DES ATTRIBUTS ---- \n");

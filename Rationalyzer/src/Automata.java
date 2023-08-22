@@ -125,11 +125,15 @@ public class Automata {
     
         // Vérification des transitions pour chaque état et symbole de l'alphabet
         for (String etat : etats) {
+            if (etat.equals(poubelle)) {
+                continue; // Ignorer les vérifications pour l'état poubelle
+            }
+    
             for (String symbole : alphabet) {
                 Map<String, Set<String>> transitionEtat = transitions.getOrDefault(etat, new HashMap<>());
                 Set<String> etatsDestination = transitionEtat.getOrDefault(symbole, Collections.emptySet());
     
-                if (etatsDestination.isEmpty() || etatsDestination.contains(poubelle)) {
+                if (etatsDestination.isEmpty()) {
                     // L'état est incomplet, mais il peut y avoir d'autres transitions pour d'autres symboles,
                     // donc continuez à vérifier les autres transitions
                     return false;
@@ -146,6 +150,7 @@ public class Automata {
     
         return true;
     }
+    
     
     
 
