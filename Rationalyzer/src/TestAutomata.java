@@ -41,6 +41,30 @@ public class TestAutomata {
         automate.determiniser();
         afficherAttributsAutomate(automate);
         testerDeterminisme(automate);
+
+
+
+         // Instanciation de l'expression régulière et création de l'arbre de syntaxe
+         String expression = "(a|b)";
+         Automata automata = new Automata();
+         RegularExpressionNode rootNode = automata.parseExpression(expression);
+        
+         
+         // Génération de l'automate
+         Automata generatedAutomaton = rootNode.generateAutomaton();
+
+         afficherAttributsAutomate(generatedAutomaton);
+         
+         // Test de l'automate avec différentes chaînes
+         System.out.println("Automate accepte 'a': " + generatedAutomaton.accepteMot("a"));
+         System.out.println("Automate accepte 'ab': " + generatedAutomaton.accepteMot("ab"));
+         System.out.println("Automate accepte 'bca': " + generatedAutomaton.accepteMot("bca"));
+         System.out.println("Automate accepte 'bbbca': " + generatedAutomaton.accepteMot("bbbca"));
+         System.out.println("Automate accepte 'c': " + generatedAutomaton.accepteMot("c"));
+        
+        
+        
+        
     }
 
     private static void afficherAttributsAutomate(Automata automate) {

@@ -24,6 +24,11 @@ public class Automata {
         etatsFinaux = new HashSet<>();
         transitions = new HashMap<>();
     }
+    private int stateCounter = 0; 
+    
+    public String getNewStateName() {
+        return "q" + stateCounter++;
+    }
 
 
     public String getNom() {
@@ -267,6 +272,74 @@ public class Automata {
     
         return fermeture;
     }
+    
+    public void ajouterTransitionsEpsilon(Set<String> etatsSources, String etatDestination) {
+        for (String etatSource : etatsSources) {
+            ajouterTransition(etatSource, "", etatDestination);
+        }
+    }
+    
+    
+    
+    public RegularExpressionNode parseExpression(String expression) {
+        Stack<RegularExpressionNode> operandStack = new Stack<>();
+        Stack<String> operatorStack = new Stack<>();
+        
+        for (int i = 0; i < expression.length(); i++) {
+            char c = expression.charAt(i);
+            
+            if (c == '(') {
+                operatorStack.push("(");
+            } else if (c == ')') {
+                while (!operatorStack.isEmpty() && !operatorStack.peek().equals("(")) {
+                    String operator = operatorStack.pop();
+                    RegularExpressionNode rightOperand = operandStack.pop();
+                    RegularExpressionNode leftOperand = operandStack.pop();
+                    operandStack.push(createOperationNode(operator, leftOperand, rightOperand));
+                }
+                operatorStack.pop(); // Pop la "("
+            } else if (isOperator(c)) {
+                String currentOperator = String.valueOf(c);
+                while (!operatorStack.isEmpty() && precedence(operatorStack.peek()) >= precedence(currentOperator)) {
+                    String operator = operatorStack.pop();
+                    RegularExpressionNode rightOperand = operandStack.pop();
+                    RegularExpressionNode leftOperand = operandStack.pop();
+                    operandStack.push(createOperationNode(operator, leftOperand, rightOperand));
+                }
+                operatorStack.push(currentOperator);
+            } else {
+                operandStack.push(new RegularExpressionNode("", String.valueOf(c)));
+            }
+        }
+        
+        while (!operatorStack.isEmpty()) {
+            String operator = operatorStack.pop();
+            RegularExpressionNode rightOperand = operandStack.pop();
+            RegularExpressionNode leftOperand = operandStack.pop();
+            operandStack.push(createOperationNode(operator, leftOperand, rightOperand));
+        }
+        
+        return operandStack.pop();
+    }
+    
+    private RegularExpressionNode createOperationNode(String operation, RegularExpressionNode left, RegularExpressionNode right) {
+        RegularExpressionNode operationNode = new RegularExpressionNode(operation, "");
+        operationNode.setLeftChild(left);
+        operationNode.setRightChild(right);
+        return operationNode;
+    }
+    
+    private boolean isOperator(char c) {
+        return c == '|' || c == '*' || c == '+';
+    }
+    
+    private int precedence(String operator) {
+        if (operator.equals("|")) return 1;
+        if (operator.equals("*") || operator.equals("+")) return 2;
+        return 0;
+    }
+    
+    
     
     
 
