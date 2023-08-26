@@ -161,6 +161,24 @@ public class Automata {
     
     
 
+    public boolean estDeterministe() {
+        for (String etat : etats) {
+            Map<String, Set<String>> transitionEtat = transitions.getOrDefault(etat, Collections.emptyMap());
+    
+            // Vérifier le nombre de transitions sortantes pour chaque symbole
+            for (String symbole : alphabet) {
+                Set<String> etatsDestination = transitionEtat.getOrDefault(symbole, Collections.emptySet());
+                
+                // Si un symbole a plus d'une transition sortante, l'automate n'est pas déterministe
+                if (etatsDestination.size() > 1) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
     
 
 }

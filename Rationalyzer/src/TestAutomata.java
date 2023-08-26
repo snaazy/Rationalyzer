@@ -80,4 +80,10 @@ public class TestAutomata {
         boolean estComplet = automate.estComplet();
         System.out.println("L'automate est complet : " + estComplet);
     }
+
+    private static void testerDeterminisme(Automata automate) {
+        boolean estDeterministe = automate.estDeterministe();
+        System.out.println("L'automate est déterministe : " + estDeterministe);
+    }
+    
 }
