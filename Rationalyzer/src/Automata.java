@@ -25,12 +25,33 @@ public class Automata {
         transitions = new HashMap<>();
     }
 
+
     public String getNom() {
         return nom;
     }
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public Set<String> getEtats() {
+        return etats;
+    }
+
+    public Set<String> getAlphabet() {
+        return alphabet;
+    }
+
+    public Set<String> getEtatsInitiaux() {
+        return etatsInitiaux;
+    }
+
+    public Set<String> getEtatsFinaux() {
+        return etatsFinaux;
+    }
+
+    public Map<String, Map<String, Set<String>>> getTransitions() {
+        return transitions;
     }
 
     public void ajouterEtat(String etat) {
@@ -139,28 +160,7 @@ public class Automata {
     
     
     
+
     
-    
-    
-
-    public Set<String> getEtats() {
-        return etats;
-    }
-
-    public Set<String> getAlphabet() {
-        return alphabet;
-    }
-
-    public Set<String> getEtatsInitiaux() {
-        return etatsInitiaux;
-    }
-
-    public Set<String> getEtatsFinaux() {
-        return etatsFinaux;
-    }
-
-    public Map<String, Map<String, Set<String>>> getTransitions() {
-        return transitions;
-    }
 
 }
