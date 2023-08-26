@@ -179,6 +179,95 @@ public class Automata {
         return true;
     }
     
+    public Automata determiniser() {
+        Automata automateDeterministe = new Automata(nom + "_deterministe");
+    
+        // Initialisation de l'état initial de l'automate déterministe avec l'ensemble des états atteignables depuis les états initiaux
+        Set<String> etatsInitiauxDeterministes = epsilonFermeture(etatsInitiaux);
+        automateDeterministe.ajouterEtatInitial(String.join(",", etatsInitiauxDeterministes));
+        
+        // Map pour stocker les nouveaux états de l'automate déterministe et leurs transitions
+        Map<Set<String>, Map<String, Set<String>>> nouveauxEtatsTransitions = new HashMap<>();
+        
+        // File pour stocker les nouveaux états à explorer
+        Queue<Set<String>> etatsAExplorer = new LinkedList<>();
+        etatsAExplorer.add(etatsInitiauxDeterministes);
+    
+        while (!etatsAExplorer.isEmpty()) {
+            Set<String> etatsCourants = etatsAExplorer.poll();
+    
+            for (String symbole : alphabet) {
+                Set<String> etatsSuivants = new HashSet<>();
+                for (String etatCourant : etatsCourants) {
+                    Map<String, Set<String>> transitionEtat = transitions.getOrDefault(etatCourant, Collections.emptyMap());
+                    Set<String> etatsDestination = transitionEtat.getOrDefault(symbole, Collections.emptySet());
+                    etatsSuivants.addAll(epsilonFermeture(etatsDestination));
+                }
+    
+                if (!etatsSuivants.isEmpty()) {
+                    if (!nouveauxEtatsTransitions.containsKey(etatsSuivants)) {
+                        etatsAExplorer.add(etatsSuivants);
+                        nouveauxEtatsTransitions.put(etatsSuivants, new HashMap<>());
+                    }
+                    Map<String, Set<String>> transitionEtat = nouveauxEtatsTransitions.get(etatsSuivants);
+                    transitionEtat.put(symbole, etatsSuivants);
+                }
+            }
+        }
+    
+        // Convertir les nouveaux états en noms uniques pour les états de l'automate déterministe
+        Map<Set<String>, String> etatsNoms = new HashMap<>();
+        for (Set<String> etatsDeterministes : nouveauxEtatsTransitions.keySet()) {
+            String etatNom = String.join(",", etatsDeterministes);
+            etatsNoms.put(etatsDeterministes, etatNom);
+            automateDeterministe.ajouterEtat(etatNom);
+        }
+    
+        // Ajouter les transitions à l'automate déterministe en utilisant les noms des nouveaux états
+        for (Map.Entry<Set<String>, Map<String, Set<String>>> entry : nouveauxEtatsTransitions.entrySet()) {
+            Set<String> etatsDeterministes = entry.getKey();
+            String etatNom = etatsNoms.get(etatsDeterministes);
+            Map<String, Set<String>> transitionEtat = entry.getValue();
+            for (Map.Entry<String, Set<String>> transEntry : transitionEtat.entrySet()) {
+                String symbole = transEntry.getKey();
+                Set<String> etatsSuivants = transEntry.getValue();
+                String etatsSuivantsNom = etatsNoms.get(etatsSuivants);
+                automateDeterministe.ajouterTransition(etatNom, symbole, etatsSuivantsNom);
+            }
+        }
+    
+        // Marquer les états finaux de l'automate déterministe
+        for (Set<String> etatsDeterministes : etatsNoms.keySet()) {
+            for (String etat : etatsDeterministes) {
+                if (etatsFinaux.contains(etat)) {
+                    automateDeterministe.ajouterEtatFinal(etatsNoms.get(etatsDeterministes));
+                    break;
+                }
+            }
+        }
+    
+        return automateDeterministe;
+    }
+    
+    private Set<String> epsilonFermeture(Set<String> etats) {
+        Set<String> fermeture = new HashSet<>(etats);
+        Queue<String> etatsAExplorer = new LinkedList<>(etats);
+    
+        while (!etatsAExplorer.isEmpty()) {
+            String etatCourant = etatsAExplorer.poll();
+            Map<String, Set<String>> transitionEtat = transitions.getOrDefault(etatCourant, Collections.emptyMap());
+            Set<String> epsilonTransitions = transitionEtat.getOrDefault("", Collections.emptySet());
+            for (String etatSuivant : epsilonTransitions) {
+                if (!fermeture.contains(etatSuivant)) {
+                    fermeture.add(etatSuivant);
+                    etatsAExplorer.add(etatSuivant);
+                }
+            }
+        }
+    
+        return fermeture;
+    }
+    
     
 
 }

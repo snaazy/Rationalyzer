@@ -19,7 +19,7 @@ public class TestAutomata {
         automate.ajouterTransition("q2", "b", "q2");
         automate.ajouterTransition("q2", "a", "q3");
         automate.ajouterTransition("q3", "b", "q3");
-       // ajouter cette transition pour tuer le determinisme automate.ajouterTransition("q3", "b", "q1");
+        automate.ajouterTransition("q3", "b", "q1");
       // on enleve la complétude  automate.ajouterTransition("q3", "a", "q1");
         
 
@@ -36,6 +36,10 @@ public class TestAutomata {
         afficherAttributsAutomate(automate);
         testerAcceptation(automate);
         testerCompletude(automate);
+        testerDeterminisme(automate);
+
+        automate.determiniser();
+        afficherAttributsAutomate(automate);
         testerDeterminisme(automate);
     }
 
