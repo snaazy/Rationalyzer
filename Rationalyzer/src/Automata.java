@@ -282,25 +282,32 @@ public class Automata {
     
     
     public RegularExpressionNode parseExpression(String expression) {
+        // Initialisation des piles pour les opérandes et les opérateurs
         Stack<RegularExpressionNode> operandStack = new Stack<>();
         Stack<String> operatorStack = new Stack<>();
         
+        // Parcours de chaque caractère de l'expression régulière
         for (int i = 0; i < expression.length(); i++) {
             char c = expression.charAt(i);
             
             if (c == '(') {
+                // Si le caractère est une parenthèse ouvrante, on la pousse sur la pile des opérateurs
                 operatorStack.push("(");
             } else if (c == ')') {
+                // Si le caractère est une parenthèse fermante
                 while (!operatorStack.isEmpty() && !operatorStack.peek().equals("(")) {
+                    // On évalue les opérations jusqu'à la parenthèse ouvrante correspondante
                     String operator = operatorStack.pop();
                     RegularExpressionNode rightOperand = operandStack.pop();
                     RegularExpressionNode leftOperand = operandStack.pop();
                     operandStack.push(createOperationNode(operator, leftOperand, rightOperand));
                 }
-                operatorStack.pop(); // Pop la "("
+                operatorStack.pop(); // On retire la parenthèse ouvrante de la pile
             } else if (isOperator(c)) {
+                // Si le caractère est un opérateur
                 String currentOperator = String.valueOf(c);
                 while (!operatorStack.isEmpty() && precedence(operatorStack.peek()) >= precedence(currentOperator)) {
+                    // On évalue les opérations de priorité supérieure ou égale
                     String operator = operatorStack.pop();
                     RegularExpressionNode rightOperand = operandStack.pop();
                     RegularExpressionNode leftOperand = operandStack.pop();
@@ -308,10 +315,12 @@ public class Automata {
                 }
                 operatorStack.push(currentOperator);
             } else {
+                // Si le caractère est un symbole de l'alphabet
                 operandStack.push(new RegularExpressionNode("", String.valueOf(c)));
             }
         }
         
+        // Après avoir parcouru toute l'expression, on évalue les opérations restantes
         while (!operatorStack.isEmpty()) {
             String operator = operatorStack.pop();
             RegularExpressionNode rightOperand = operandStack.pop();
@@ -319,15 +328,18 @@ public class Automata {
             operandStack.push(createOperationNode(operator, leftOperand, rightOperand));
         }
         
+        // Le dernier nœud restant sur la pile des opérandes est l'arbre syntaxique final
         return operandStack.pop();
     }
     
     private RegularExpressionNode createOperationNode(String operation, RegularExpressionNode left, RegularExpressionNode right) {
+        // Création d'un nœud d'opération avec un opérateur et des enfants gauche et droit
         RegularExpressionNode operationNode = new RegularExpressionNode(operation, "");
         operationNode.setLeftChild(left);
         operationNode.setRightChild(right);
         return operationNode;
     }
+    
     
     private boolean isOperator(char c) {
         return c == '|' || c == '*' || c == '+';
